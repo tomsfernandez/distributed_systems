@@ -2,3 +2,4 @@
 .idea
 catalog/catalog.iml
 /catalog/venv/
+catalog/.env

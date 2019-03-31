@@ -9,3 +9,27 @@ services:
       dockerfile: Dockerfile
     ports:
       - 50051:50051
+    environment:
+      MONGO_HOST: mongo
+      MONGO_PORT: 27017
+      MONGO_DB: Catalog
+      MONGO_COLLECTION: Products
+    env_file:
+      - catalog/.env
+
+  mongo:
+    image: mongo:4
+    container_name: "mongo"
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
+    external: true
+
+networks:
+  default:
+    external:
+      name: "custom_network"

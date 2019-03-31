@@ -1,15 +1,24 @@
 syntax="proto3";
 
-message Article {
-  int32 id = 1;
+message Product {
+  string id = 1;
   string title = 2;
   string description = 3;
 }
 
-message ArticleRequest {
-  int32 id = 1; 
+message ProductList {
+  repeated Product products = 1;
+}
+
+message Empty {
+
+}
+
+message ProductRequest {
+  string id = 1;
 }
 
 service Catalog {
-  rpc GetArticle (ArticleRequest) returns (Article) {}
+  rpc GetProduct (ProductRequest) returns (Product) {}
+  rpc GetAllProducts (Empty) returns (ProductList) {}
 }
