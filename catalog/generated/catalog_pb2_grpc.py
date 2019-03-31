@@ -19,6 +19,11 @@ class CatalogStub(object):
         request_serializer=catalog__pb2.ProductRequest.SerializeToString,
         response_deserializer=catalog__pb2.Product.FromString,
         )
+    self.GetProductBatch = channel.unary_unary(
+        '/Catalog/GetProductBatch',
+        request_serializer=catalog__pb2.BatchProductRequest.SerializeToString,
+        response_deserializer=catalog__pb2.ProductList.FromString,
+        )
     self.GetAllProducts = channel.unary_unary(
         '/Catalog/GetAllProducts',
         request_serializer=catalog__pb2.Empty.SerializeToString,
@@ -31,6 +36,13 @@ class CatalogServicer(object):
   pass
 
   def GetProduct(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def GetProductBatch(self, request, context):
     # missing associated documentation comment in .proto file
     pass
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -51,6 +63,11 @@ def add_CatalogServicer_to_server(servicer, server):
           servicer.GetProduct,
           request_deserializer=catalog__pb2.ProductRequest.FromString,
           response_serializer=catalog__pb2.Product.SerializeToString,
+      ),
+      'GetProductBatch': grpc.unary_unary_rpc_method_handler(
+          servicer.GetProductBatch,
+          request_deserializer=catalog__pb2.BatchProductRequest.FromString,
+          response_serializer=catalog__pb2.ProductList.SerializeToString,
       ),
       'GetAllProducts': grpc.unary_unary_rpc_method_handler(
           servicer.GetAllProducts,

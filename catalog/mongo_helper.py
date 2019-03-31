@@ -12,3 +12,7 @@ def getMongoCollection():
 def parseProductToGrpc(product):
     product = Product(id=str(product['_id']), title=product['title'], description=product['description'])
     return product
+
+
+def getProductsWithIds(db, idList):
+    return db.find({'_id': {'$in': idList}})

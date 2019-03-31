@@ -6,7 +6,7 @@ import grpc
 import time
 from concurrent import futures
 from settings import MONGO_DB, MONGO_PORT, MONGO_HOST, MONGO_COLLECTION, GRPC_PORT
-from mongo_helper import getMongoCollection, parseProductToGrpc
+from mongo_helper import getMongoCollection, parseProductToGrpc, getProductsWithIds
 from bson.objectid import ObjectId
 
 _ONE_DAY_IN_SECONDS = 60 * 60 * 24
@@ -22,6 +22,12 @@ class CatalogService(CatalogServicer):
         result = parseProductToGrpc(product) if product \
             else Product(id="0", title="Empty Product", description="Empty Description")
         return result
+
+    def GetProductBatch(self, request, context):
+        object_ids = list(map(lambda x: ObjectId(x), list(request.ids)))
+        product_list = getProductsWithIds(self.products, object_ids)
+        result = list(map(lambda x: parseProductToGrpc(x), product_list))
+        return ProductList(products=result)
 
     def GetAllProducts(self, request, context):
         result = list(self.products.find())

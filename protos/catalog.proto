@@ -18,7 +18,12 @@ message ProductRequest {
   string id = 1;
 }
 
+message BatchProductRequest {
+  repeated string ids = 1;
+}
+
 service Catalog {
   rpc GetProduct (ProductRequest) returns (Product) {}
+  rpc GetProductBatch (BatchProductRequest) returns (ProductList) {}
   rpc GetAllProducts (Empty) returns (ProductList) {}
 }
