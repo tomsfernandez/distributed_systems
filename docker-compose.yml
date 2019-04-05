@@ -12,11 +12,23 @@ services:
     environment:
       MONGO_HOST: mongo
       MONGO_PORT: 27017
-      MONGO_DB: Catalog
-      MONGO_COLLECTION: Products
-    env_file:
-      - catalog/.env
-
+      MONGO_DB: store
+      MONGO_COLLECTION: products
+  favorites_api:
+    image: favorites_api
+    container_name: 'favorites_api'
+    build:
+      context: favorites
+      dockerfile: Dockerfile
+    ports:
+      - 50052:50051
+    environment:
+      GRPC_PORT: 50051
+      MONGO_HOST: mongo
+      MONGO_PORT: 27017
+      MONGO_DB: store
+      CATALOG_GRPC_HOST: catalog_api
+      CATALOG_GRPC_PORT: 50051
   mongo:
     image: mongo:4
     container_name: "mongo"

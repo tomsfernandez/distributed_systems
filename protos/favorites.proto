@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package store;
+
+import "empty.proto";
+import "product.proto";
+
+service Favorites {
+    rpc GetFavorites (GetFavoritesRequest) returns (ProductList);
+    rpc UpdateFavorites (UpdateFavoritesRequest) returns (Empty);
+}
+
+message GetFavoritesRequest {
+    string user_id = 1;
+    bool with_product_description = 2;
+}
+
+message UpdateFavoritesRequest {
+    string user_id = 1;
+    repeated string add_product_ids = 2;
+    repeated string remove_product_ids = 3;
+}

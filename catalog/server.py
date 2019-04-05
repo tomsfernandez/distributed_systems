@@ -1,7 +1,5 @@
-# To generate protos: python -m grpc_tools.protoc -I../protos --python_out=. --grpc_python_out=. ../protos/catalog.proto
-
-from generated.catalog_pb2 import Product, ProductList
-from generated.catalog_pb2_grpc import CatalogServicer, add_CatalogServicer_to_server
+from product_pb2 import Product, ProductList
+from catalog_pb2_grpc import CatalogServicer, add_CatalogServicer_to_server
 import grpc
 import time
 from concurrent import futures

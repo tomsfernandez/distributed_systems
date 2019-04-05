@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package store;
+
+message Product {
+    string id = 1;
+    string title = 2;
+    string description = 3;
+}
+
+message ProductList {
+    repeated Product products = 1;
+}

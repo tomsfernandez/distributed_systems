@@ -1,5 +1,6 @@
 # Created by .ignore support plugin (hsz.mobi)
 .idea
-catalog/catalog.iml
+*.iml
 /catalog/venv/
 catalog/.env
+node_modules

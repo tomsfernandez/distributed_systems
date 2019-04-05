@@ -1,18 +1,9 @@
-syntax="proto3";
+syntax = "proto3";
 
-message Product {
-  string id = 1;
-  string title = 2;
-  string description = 3;
-}
+package store;
 
-message ProductList {
-  repeated Product products = 1;
-}
-
-message Empty {
-
-}
+import "empty.proto";
+import "product.proto";
 
 message ProductRequest {
   string id = 1;

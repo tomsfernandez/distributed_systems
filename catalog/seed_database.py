@@ -17,4 +17,4 @@ def generate(amount):
 
 products = getMongoCollection()
 toInsert = generate(seed_amount)
-products.insert_many(toInsert)
+#products.insert_many(toInsert)
