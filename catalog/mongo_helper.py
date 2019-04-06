@@ -1,4 +1,4 @@
-from product_pb2 import Product
+from protos.product_pb2 import Product
 from settings import MONGO_HOST, MONGO_PORT, MONGO_DB, MONGO_COLLECTION
 from pymongo import MongoClient
 
