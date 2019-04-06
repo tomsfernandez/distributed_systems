@@ -1,6 +1,4 @@
 let db;
-const url = `mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}`;
-const mongoDb = process.env.MONGO_DB;
 
 async function init() {
     await connect();
@@ -20,18 +18,20 @@ async function updateFavorites(user_id, favorites) {
 module.exports = {init, getFavorites, updateFavorites};
 
 async function connect() {
+    const url = `mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}`;
+    const MongoClient = require('mongodb').MongoClient;
+    const client = new MongoClient(url, {useNewUrlParser:true});
+    console.log(`Connecting to Mongo with url ${url} on db ${process.env.MONGO_DB}`);
     try {
-        const MongoClient = require('mongodb').MongoClient;
-        console.log(`Connecting to Mongo with url ${url} on db: ${mongoDb}`);
-        const client = new MongoClient(url, {useNewUrlParser:true});
         await client.connect();
-        console.log(`Connected to Mongo successfully`);
-        db = client.db(mongoDb);
     } catch (e) {
         console.error('Error connecting to database, retrying in 1 second', e);
         await new Promise(resolve => setTimeout(resolve, 1000));
         await connect();
+        return;
     }
+    console.log(`Connected to Mongo successfully`);
+    db = client.db(process.env.MONGO_DB);
 }
 
 async function prepare() {
