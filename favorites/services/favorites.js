@@ -10,17 +10,17 @@ async function getFavorites(call, callback) {
         if (favoritesDb && favoritesDb.products.length) {
             let products;
             if (call.request.getWithProductDescription()) {
-                const catalogClient = new protobuf.catalog.grpc.CatalogClient(`${process.env.CATALOG_GRPC_HOST}:${process.env.CATALOG_GRPC_PORT}`, grpc.credentials.createInsecure());
-                const request = new protobuf.catalog.messages.BatchProductRequest();
-                request.setIdsList(favoritesDb.products);
+                const catalogClient = new protobuf.catalog.grpc.CatalogClient('192.168.99.100:50051', grpc.credentials.createInsecure());
+                const productsRequest = new protobuf.catalog.messages.BatchProductRequest();
+                productsRequest.setIdsList(favoritesDb.products);
                 try {
-                    await util.promisify(catalogClient.getProductBatch)(request);
+                    await util.promisify(catalogClient.getProductBatch)(productsRequest);
                     products = {};
                     for (let product of response.getProductsList()) {
                         products[product.getId()] = product;
                     }
                 } catch (e) {
-                    console.log('Error getting products from catalog service', e);
+                    console.error('Error getting products from catalog service', e);
                 }
             }
             for (let productId of favoritesDb.products) {
@@ -48,8 +48,8 @@ async function updateFavorites(call, callback) {
                     favorites.products.push(addId);
                 }
             }
+            await db.updateFavorites(call.request.getUserId(), favorites);
         }
-        await db.updateFavorites(call.request.getUserId(), favorites);
         callback(null, new protobuf.empty.messages.Empty());
     } catch (e) {
         callback(e);

@@ -1,53 +1,60 @@
-const MongoClient = require('mongodb').MongoClient;
-const dbName = process.env.MONGO_DB;
-const client = new MongoClient(`mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}`, {useNewUrlParser:true,reconnectTries:30,reconnectInterval:1000});
+let db;
 
 async function init() {
-    await client.connect();
+    await connect();
     await prepare();
 }
 
 async function getFavorites(user_id) {
-    const collection = getCollection('favorites');
+    const collection = db.collection('favorites');
     return await collection.findOne({user_id});
 }
 
 async function updateFavorites(user_id, favorites) {
-    const collection = getCollection('favorites');
+    const collection = db.collection('favorites');
     await collection.findOneAndReplace({user_id}, favorites);
 }
 
 module.exports = {init, getFavorites, updateFavorites};
 
-function getCollection(name) {
-    return client.db(dbName).collection(name);
+async function connect() {
+    try {
+        const MongoClient = require('mongodb').MongoClient;
+        const client = new MongoClient(`mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}`, {useNewUrlParser:true});
+        await client.connect();
+        db = client.db(process.env.MONGO_DB);
+    } catch (e) {
+        console.error('Error connecting to database, retrying in 1 second', e);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        await connect();
+    }
 }
 
 async function prepare() {
     const faker = require('faker');
 
-    const usersCol = getCollection('users');
-    if (await usersCol.countDocuments({}) > 0) return;
-    await usersCol.deleteMany({});
+    const usersCollection = db.collection('users');
+    if (await usersCollection.countDocuments({}) > 0) return;
+    await usersCollection.deleteMany({});
     const newUsers = [];
     for (let i = 0; i < 10; i++) {
         newUsers.push({name: faker.name.findName()});
     }
-    await usersCol.insertMany(newUsers);
+    await usersCollection.insertMany(newUsers);
 
-    const productsCol = getCollection('products');
-    await productsCol.deleteMany({});
+    const productsCollection = db.collection('products');
+    await productsCollection.deleteMany({});
     const newProducts = [];
     for (let i = 0; i < 100; i++) {
         newProducts.push({title: faker.commerce.productName(), description: faker.lorem.sentence()});
     }
-    await productsCol.insertMany(newProducts);
+    await productsCollection.insertMany(newProducts);
 
-    const products = await productsCol.find({}).toArray();
-    const favoritesCol = getCollection('favorites');
-    await favoritesCol.deleteMany({});
+    const products = await productsCollection.find({}).toArray();
+    const favoritesCollection = db.collection('favorites');
+    await favoritesCollection.deleteMany({});
     const newFavorites = [];
-    (await usersCol.find({}).toArray()).forEach(user => {
+    (await usersCollection.find({}).toArray()).forEach(user => {
         const newFavorite = {user_id: user._id.toString(), products: []};
         for (let i = 0; i < 5; i++) {
             const productIndex = Math.floor(Math.floor(Math.random() * products.length));
@@ -55,5 +62,5 @@ async function prepare() {
         }
         newFavorites.push(newFavorite);
     });
-    await favoritesCol.insertMany(newFavorites);
+    await favoritesCollection.insertMany(newFavorites);
 }

@@ -7,12 +7,13 @@ const services = require('./services');
     try {
         await db.init();
     } catch (e) {
-        console.log("Unable to init database", e);
+        console.error("Error initializing database", e);
         process.exit(1);
     }
     const server = new grpc.Server();
     server.addService(protobuf.favorites.grpc.FavoritesService, services.favorites);
+    server.addService(protobuf.healthcheck.grpc.HealthCheckService, services.healthcheck);
     server.bind(`0.0.0.0:${process.env.GRPC_PORT}`, grpc.ServerCredentials.createInsecure());
     server.start();
-    console.log(`Serving at port ${process.env.GRPC_PORT}`);
+    console.info(`Serving at port ${process.env.GRPC_PORT}`);
 })();

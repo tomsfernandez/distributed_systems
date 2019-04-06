@@ -1,5 +1,7 @@
 from product_pb2 import Product, ProductList
 from catalog_pb2_grpc import CatalogServicer, add_CatalogServicer_to_server
+from empty_pb2 import Empty
+from healthcheck_pb2_grpc import HealthCheckServicer, add_HealthCheckServicer_to_server
 import grpc
 import time
 from concurrent import futures
@@ -33,9 +35,16 @@ class CatalogService(CatalogServicer):
         return ProductList(products=result)
 
 
+class HealthCheckService(HealthCheckServicer):
+
+    def Check(self, request, context):
+        return Empty()
+
+
 def build_server(products):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     add_CatalogServicer_to_server(CatalogService(products), server)
+    add_HealthCheckServicer_to_server(HealthCheckService(), server)
     server.add_insecure_port('[::]:50051')
     return server
 

@@ -1,3 +1,4 @@
 module.exports = {
-    favorites: require('./favorites')
+    favorites: require('./favorites'),
+    healthcheck: require('./healthcheck')
 };
