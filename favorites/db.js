@@ -1,6 +1,6 @@
 const MongoClient = require('mongodb').MongoClient;
 const dbName = process.env.MONGO_DB;
-const client = new MongoClient(`mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}`, {useNewUrlParser:true});
+const client = new MongoClient(`mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}`, {useNewUrlParser:true,reconnectTries:30,reconnectInterval:1000});
 
 async function init() {
     await client.connect();

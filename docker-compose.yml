@@ -3,10 +3,12 @@ version: '3'
 services:
   catalog_api:
     image: catalog_api
-    container_name: 'catalog_api'
+    container_name: catalog_api
     build:
       context: catalog
       dockerfile: Dockerfile
+    depends_on:
+      - mongo
     ports:
       - 50051:50051
     environment:
@@ -14,12 +16,15 @@ services:
       MONGO_PORT: 27017
       MONGO_DB: store
       MONGO_COLLECTION: products
+
   favorites_api:
     image: favorites_api
-    container_name: 'favorites_api'
+    container_name: favorites_api
     build:
       context: favorites
       dockerfile: Dockerfile
+    depends_on:
+      - mongo
     ports:
       - 50052:50051
     environment:
@@ -29,9 +34,10 @@ services:
       MONGO_DB: store
       CATALOG_GRPC_HOST: catalog_api
       CATALOG_GRPC_PORT: 50051
+
   mongo:
     image: mongo:4
-    container_name: "mongo"
+    container_name: mongo
     ports:
       - 27017:27017
     volumes:
@@ -39,9 +45,3 @@ services:
 
 volumes:
   mongo_data:
-    external: true
-
-networks:
-  default:
-    external:
-      name: "custom_network"
