@@ -1,5 +1,4 @@
 const grpc = require('grpc');
-const util = require('util');
 const db = require('../db');
 const protobuf = require('../protobuf');
 
@@ -11,12 +10,13 @@ async function getFavorites(call, callback) {
             let products;
             if (call.request.getWithProductDescription()) {
                 const catalogClient = new protobuf.catalog.grpc.CatalogClient('192.168.99.100:50051', grpc.credentials.createInsecure());
+
                 const productsRequest = new protobuf.catalog.messages.BatchProductRequest();
                 productsRequest.setIdsList(favoritesDb.products);
                 try {
-                    await util.promisify(catalogClient.getProductBatch)(productsRequest);
+                    const productsResponse = await new Promise((resolve, reject) => catalogClient.getProductBatch(productsRequest, (err, response) => err ? reject(err) : resolve(response)));
                     products = {};
-                    for (let product of response.getProductsList()) {
+                    for (let product of productsResponse.getProductsList()) {
                         products[product.getId()] = product;
                     }
                 } catch (e) {
