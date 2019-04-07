@@ -1,10 +1,11 @@
 let db;
-const url = `mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}`;
-const mongoDb = process.env.MONGO_DB;
+const {MONGO_HOST, MONGO_PORT, MONGO_DB} = require("./config");
+const url = `mongodb://${MONGO_HOST}:${MONGO_PORT}`;
+const mongoDb = MONGO_DB;
 
 async function init() {
     await connect();
-    await prepare();
+    await seedDatabase();
 }
 
 async function getFavorites(user_id) {
@@ -34,10 +35,16 @@ async function connect() {
     }
 }
 
-async function prepare() {
+async function seedDatabase() {
     const faker = require('faker');
-
+    const productsCollection = db.collection('products');
     const usersCollection = db.collection('users');
+    await seedUsers(faker, usersCollection);
+    await seedProducts(faker, productsCollection);
+    await seedFavorites(faker, usersCollection, productsCollection);
+}
+
+async function seedUsers(faker, usersCollection) {
     if (await usersCollection.countDocuments({}) > 0) return;
     await usersCollection.deleteMany({});
     const newUsers = [];
@@ -45,15 +52,18 @@ async function prepare() {
         newUsers.push({name: faker.name.findName()});
     }
     await usersCollection.insertMany(newUsers);
+}
 
-    const productsCollection = db.collection('products');
+async function seedProducts(faker, productsCollection) {
     await productsCollection.deleteMany({});
     const newProducts = [];
     for (let i = 0; i < 100; i++) {
         newProducts.push({title: faker.commerce.productName(), description: faker.lorem.sentence()});
     }
     await productsCollection.insertMany(newProducts);
+}
 
+async function seedFavorites(faker, usersCollection, productsCollection) {
     const products = await productsCollection.find({}).toArray();
     const favoritesCollection = db.collection('favorites');
     await favoritesCollection.deleteMany({});

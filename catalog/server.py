@@ -1,3 +1,5 @@
+import datetime
+
 from protos.product_pb2 import Product, ProductList
 from protos.catalog_pb2_grpc import CatalogServicer, add_CatalogServicer_to_server
 from protos.empty_pb2 import Empty
@@ -18,18 +20,21 @@ class CatalogService(CatalogServicer):
         self.products = products
 
     def GetProduct(self, request, context):
+        print(f"[{datetime.datetime.now()}] - GetProduct with {request}")
         product = self.products.find_one({'_id': ObjectId(request.id)})
         result = parseProductToGrpc(product) if product \
             else Product(id="0", title="Empty Product", description="Empty Description")
         return result
 
     def GetProductBatch(self, request, context):
+        print(f"[{datetime.datetime.now()}] - GetProductBatch with {request}")
         object_ids = list(map(lambda x: ObjectId(x), list(request.ids)))
         product_list = getProductsWithIds(self.products, object_ids)
         result = list(map(lambda x: parseProductToGrpc(x), product_list))
         return ProductList(products=result)
 
     def GetAllProducts(self, request, context):
+        print(f"[{datetime.datetime.now()}] - GetAllProducts with {request}")
         result = list(self.products.find())
         result = list(map(lambda x: parseProductToGrpc(x), result))
         return ProductList(products=result)

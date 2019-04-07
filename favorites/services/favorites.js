@@ -1,51 +1,31 @@
+const {CatalogService} = require("./CatalogService");
 const db = require('../db');
 const protobuf = require('../protobuf');
 
-async function getFavorites(call, callback) {
-    let favorites;
+async function getFavorites(catalogService, call, callback) {
+    let favoriteObject;
     try {
-        favorites = await db.getFavorites(call.request.getUserId());
+        favoriteObject = await db.getFavorites(call.request.getUserId());
     } catch (e) {
         callback(e);
     }
     const response = new protobuf.product.messages.ProductList();
-    if (favorites && favorites.products.length) {
+    if (favoriteObject && favoriteObject.products.length) {
         let products;
         if (call.request.getWithProductDescription()) {
-            for (let i = 0; i < protobuf.catalog.grpc.instantiatedClients.length; i++) {
-                const catalogClient = protobuf.catalog.grpc.instantiatedClients[i];
-                const productsRequest = new protobuf.catalog.messages.BatchProductRequest();
-                productsRequest.setIdsList(favorites.products);
-                try {
-                    const productsResponse = await new Promise((resolve, reject) => {
-                        let fulfilled = false;
-                        let canceled = false;
-                        catalogClient.getProductBatch(productsRequest, (err, response) => {
-                            if (canceled) return;
-                            fulfilled = true;
-                            err ? reject(err) : resolve(response);
-                        });
-                        setTimeout(() => {
-                            if (!fulfilled) {
-                                canceled = true;
-                                reject(new Error(`Timeout of ${process.env.LOAD_BALANCING_TIMEOUT} ms exceeded`));
-                            }
-                        }, process.env.LOAD_BALANCING_TIMEOUT);
-                    });
-                    products = {};
-                    for (let product of productsResponse.getProductsList()) {
-                        products[product.getId()] = product;
-                    }
-                    break;
-                } catch (e) {
-                    console.error(`Error getting products from catalog service with client ${i+1} of ${protobuf.catalog.grpc.instantiatedClients.length}`, e);
-                }
+            products = {};
+            const productsResponse = await catalogService.getProductBatch(favoriteObject.products);
+            for (let product of productsResponse.getProductsList()) {
+                products[product.getId()] = product;
             }
         }
-        for (let productId of favorites.products) {
+        for (let productId of favoriteObject.products) {
             const product = new protobuf.product.messages.Product();
             product.setId(productId);
-            if (products) product.setDescription(products[productId].getDescription());
+            if (products) {
+                product.setTitle(products[productId].getTitle());
+                product.setDescription(products[productId].getDescription());
+            }
             response.getProductsList().push(product);
         }
     }
