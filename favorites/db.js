@@ -2,7 +2,7 @@ let db;
 
 const {MONGO_HOST, MONGO_PORT, MONGO_DB} = require("./config");
 const url = `mongodb://${MONGO_HOST}:${MONGO_PORT}`;
-const mongoDb = MONGO_DB;
+const mongoDatabase = MONGO_DB;
 
 async function init() {
     await connect();
@@ -22,10 +22,9 @@ async function updateFavorites(user_id, favorites) {
 module.exports = {init, getFavorites, updateFavorites};
 
 async function connect() {
-    const url = `mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}`;
     const MongoClient = require('mongodb').MongoClient;
     const client = new MongoClient(url, {useNewUrlParser:true});
-    console.log(`Connecting to Mongo with url ${url} on db ${process.env.MONGO_DB}`);
+    console.log(`Connecting to Mongo with url ${url} on db ${mongoDatabase}`);
     try {
         await client.connect();
     } catch (e) {
@@ -35,7 +34,7 @@ async function connect() {
         return;
     }
     console.log(`Connected to Mongo successfully`);
-    db = client.db(process.env.MONGO_DB);
+    db = client.db(mongoDatabase);
 }
 
 async function seedDatabase() {
