@@ -5,9 +5,9 @@ const protobuf = require('../protobuf');
 
 class CatalogService {
 
-    constructor(serviceIPs, healthCheckInterval) {
+    constructor(serviceIPs, healthCheckInterval, requestTimeout) {
         if(serviceIPs.length === 0) throw new Error("[CatalogService] - Cant make a CatalogService with no IPs!");
-        this.clients = CatalogServiceClientFactory.makeClients(serviceIPs);
+        this.clients = CatalogServiceClientFactory.makeClients(serviceIPs, requestTimeout);
         this.blackList = [];
         this.healthInterval = setInterval(() => this.checkBlackListHealth(), healthCheckInterval);
     }
@@ -60,33 +60,46 @@ class CatalogService {
 
 class CatalogServiceClientFactory {
 
-    static makeClients(serviceIPs){
+    static makeClients(serviceIPs, requestTimeout){
         return serviceIPs.map(ip => {
             const grpcClient = new catalogGrpcClient.CatalogClient(ip, grpc.credentials.createInsecure());
             const grpcHealth = new healthCheckGrpcClient.HealthCheckClient(ip, grpc.credentials.createInsecure());
-            return new CatalogServiceClient(grpcClient, grpcHealth, ip);
+            return new CatalogServiceClient(grpcClient, grpcHealth, ip, requestTimeout);
         })
     }
 }
 
 class CatalogServiceClient {
 
-    constructor(client, healthCheck, ip) {
+    constructor(client, healthCheck, ip, requestTimeout) {
         this.client = client;
         this.healthCheck = healthCheck;
         this.ip = ip;
+        this.requestTimeout = requestTimeout;
     }
 
     getProductBatch(requestData) {
         console.log(`GetProductBatch for ${this.ip} with ${requestData}`);
         return new Promise((resolve, reject) => {
+            let fulfilled = false;
+            let canceled = false;
             this.client.getProductBatch(requestData, (err, response) => {
+                if (canceled) return;
                 if(err) {
                     console.log(`[Error] - GetProductBatch failed for ${this.ip} with ${err.message}`);
                     reject(err);
                 }
-                else resolve(response);
+                else {
+                    fulfilled = true;
+                    resolve(response);
+                }
             })
+            setTimeout(() => {
+                if (!fulfilled) {
+                    canceled = true;
+                    reject(new Error(`Timeout of ${this.requestTimeout} ms exceeded`));
+                }
+            }, this.requestTimeout);
         })
     }
 
