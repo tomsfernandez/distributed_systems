@@ -1,14 +1,16 @@
 {
-  "name": "product-list",
+  "name": "favorites",
   "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
+  "description": "Favorite products server",
+  "main": "server.js",
   "scripts": {
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Nicolás S. Báez <nxbaez@gmail.com>",
   "license": "ISC",
+  "repository": "https://github.com/tomsfernandez/distributed_systems.git",
   "dependencies": {
     "faker": "^4.1.0",
     "google-protobuf": "^3.7.1",
