@@ -74,7 +74,7 @@ proto.store.Product.toObject = function(includeInstance, msg) {
 
 
 /**
- * Deserializes binary data (in protobuf wire format).
+ * Deserializes binary data (in protobuffers wire format).
  * @param {jspb.ByteSource} bytes The bytes to deserialize.
  * @return {!proto.store.Product}
  */
@@ -86,7 +86,7 @@ proto.store.Product.deserializeBinary = function(bytes) {
 
 
 /**
- * Deserializes binary data (in protobuf wire format) from the
+ * Deserializes binary data (in protobuffers wire format) from the
  * given reader into the given message object.
  * @param {!proto.store.Product} msg The message object to deserialize into.
  * @param {!jspb.BinaryReader} reader The BinaryReader to use.
@@ -121,7 +121,7 @@ proto.store.Product.deserializeBinaryFromReader = function(msg, reader) {
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format).
+ * Serializes the message to binary data (in protobuffers wire format).
  * @return {!Uint8Array}
  */
 proto.store.Product.prototype.serializeBinary = function() {
@@ -132,7 +132,7 @@ proto.store.Product.prototype.serializeBinary = function() {
 
 
 /**
- * Serializes the given message to binary data (in protobuf wire
+ * Serializes the given message to binary data (in protobuffers wire
  * format), writing to the given BinaryWriter.
  * @param {!proto.store.Product} message
  * @param {!jspb.BinaryWriter} writer
@@ -276,7 +276,7 @@ proto.store.ProductList.toObject = function(includeInstance, msg) {
 
 
 /**
- * Deserializes binary data (in protobuf wire format).
+ * Deserializes binary data (in protobuffers wire format).
  * @param {jspb.ByteSource} bytes The bytes to deserialize.
  * @return {!proto.store.ProductList}
  */
@@ -288,7 +288,7 @@ proto.store.ProductList.deserializeBinary = function(bytes) {
 
 
 /**
- * Deserializes binary data (in protobuf wire format) from the
+ * Deserializes binary data (in protobuffers wire format) from the
  * given reader into the given message object.
  * @param {!proto.store.ProductList} msg The message object to deserialize into.
  * @param {!jspb.BinaryReader} reader The BinaryReader to use.
@@ -316,7 +316,7 @@ proto.store.ProductList.deserializeBinaryFromReader = function(msg, reader) {
 
 
 /**
- * Serializes the message to binary data (in protobuf wire format).
+ * Serializes the message to binary data (in protobuffers wire format).
  * @return {!Uint8Array}
  */
 proto.store.ProductList.prototype.serializeBinary = function() {
@@ -327,7 +327,7 @@ proto.store.ProductList.prototype.serializeBinary = function() {
 
 
 /**
- * Serializes the given message to binary data (in protobuf wire
+ * Serializes the given message to binary data (in protobuffers wire
  * format), writing to the given BinaryWriter.
  * @param {!proto.store.ProductList} message
  * @param {!jspb.BinaryWriter} writer

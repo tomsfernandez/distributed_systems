@@ -22,6 +22,7 @@ class CatalogService(CatalogServicer):
     def GetProduct(self, request, context):
         print(f"[{datetime.datetime.now()}] - GetProduct with {request}")
         product = self.products.find_one({'_id': ObjectId(request.id)})
+        print(f"[{datetime.datetime.now()}] - Product name: {product.title}")
         result = parseProductToGrpc(product) if product \
             else Product(id="0", title="Empty Product", description="Empty Description")
         return result
