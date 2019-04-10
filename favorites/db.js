@@ -41,9 +41,13 @@ async function seedDatabase() {
     const faker = require('faker');
     const productsCollection = db.collection('products');
     const usersCollection = db.collection('users');
+    console.log("Seeding Users...");
     await seedUsers(faker, usersCollection);
+    console.log("Seeding Products...");
     await seedProducts(faker, productsCollection);
+    console.log("Seeding Favorites...");
     await seedFavorites(faker, usersCollection, productsCollection);
+    console.log("Done seeding!");
 }
 
 async function seedUsers(faker, usersCollection) {
