@@ -5,6 +5,9 @@ Trabajo práctico para sistemas distribuidos
 #How to run and start de project
 1 - docker-compose up
 
+#Recompile project
+1 - docker-compose up --build --force-recreate
+
 
 #Compile protos:
 
