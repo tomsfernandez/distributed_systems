@@ -1,0 +1,2 @@
+class GrpcRequestError(Exception):
+    pass
