@@ -2,7 +2,7 @@ import time
 
 from protos.catalog_pb2_grpc import CatalogStub
 from protos.favorites_pb2_grpc import FavoritesStub
-from protos.catalog_pb2 import ProductRequest
+from protos.catalog_pb2 import ProductRequest, BatchProductRequest
 from protos.favorites_pb2 import UpdateFavoritesRequest, GetFavoritesRequest
 from protos.empty_pb2 import Empty
 import grpc
@@ -11,29 +11,28 @@ import grpc
 def config():
     # CATALOGUE API
     catalog_channel = grpc.insecure_channel('localhost:50051')
+    batch_list = ['5cae9f5cce166a184066930a', '5cae9f5cce166a25c2669358']
     catalog_stub = CatalogStub(catalog_channel)
-    get_product(catalog_stub, "5cae3800b3d96b440059327b")
+    # get_product(catalog_stub, '5cae9f5cce166a184066930a')
     get_all_products(catalog_stub)
+    # get_products_batch(catalog_stub, batch_list)
 
     # FAVORITE API
-    user_id = '5cad11867a8d11f4768b8928'
-    product_id = '5cad2492a9767716e292995a'
-    favorite_channel = grpc.insecure_channel('192.168.99.100:50052')
+    user_id = '5cae9f5cce166ac3876692f5'
+    product_list = ['5cae9f5cce166a184066930a']
+    favorite_channel = grpc.insecure_channel('localhost:50052')
     favorite_stub = FavoritesStub(favorite_channel)
-    get_favorites(favorite_stub, user_id, False)
-    update_favorite(favorite_stub, user_id, product_id)
+    get_favorites(favorite_stub, user_id, True)
+    # update_favorite(favorite_stub, user_id, product_list, [])
 
 
 def process_response(call_future):
-    result = call_future.result()
-    print(result)
+    print(call_future.result())
 
 
 def get_product(stub, product_id):
-    request = ProductRequest(id=product_id)
-    product_future = stub.GetProduct.future(request)
-    result = product_future.result()
-    print(result)
+    product_future = stub.GetProduct.future(ProductRequest(id=product_id))
+    product_future.add_done_callback(process_response)
 
 
 def get_all_products(stub):
@@ -41,8 +40,8 @@ def get_all_products(stub):
     products_future.add_done_callback(process_response)
 
 
-def get_products_batch(stub):
-    products_batch_future = stub.GetAllProducts.future(Empty())
+def get_products_batch(stub, batch_list):
+    products_batch_future = stub.GetProductBatch.future(BatchProductRequest(ids=batch_list))
     products_batch_future.add_done_callback(process_response)
 
 
@@ -52,8 +51,9 @@ def get_favorites(stub, user_id, with_description):
     favorite_future.add_done_callback(process_response)
 
 
-def update_favorite(stub, user_id, product_id):
-    favorite_future = stub.UpdateFavorites.future(UpdateFavoritesRequest())
+def update_favorite(stub, user_id, add_list, remove_list):
+    request = UpdateFavoritesRequest(user_id=user_id, add_product_ids=add_list, remove_product_ids=remove_list)
+    favorite_future = stub.UpdateFavorites.future(request)
     favorite_future.add_done_callback(process_response)
 
 
