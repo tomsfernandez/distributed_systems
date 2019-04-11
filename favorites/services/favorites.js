@@ -13,10 +13,16 @@ async function getFavorites(catalogService, call, callback) {
     if (favoriteObject && favoriteObject.products.length) {
         let products;
         if (call.request.getWithProductDescription()) {
-            products = {};
-            const productsResponse = await catalogService.getProductBatch(favoriteObject.products);
-            for (let product of productsResponse.getProductsList()) {
-                products[product.getId()] = product;
+            let productsResponse;
+            try {
+                productsResponse = await catalogService.getProductBatch(favoriteObject.products);
+                products = {};
+                for (let product of productsResponse.getProductsList()) {
+                    products[product.getId()] = product;
+                }
+            }
+            catch (e) {
+                console.log('Unable to fetch products from catalog service', e);
             }
         }
         for (let productId of favoriteObject.products) {
