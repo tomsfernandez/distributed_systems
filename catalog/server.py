@@ -23,7 +23,7 @@ class CatalogService(CatalogServicer):
         print(f"[{datetime.datetime.now()}] - GetProduct with {request}")
         product = self.products.find_one({'_id': ObjectId(request.id)})
         if product:
-            print(f"[{datetime.datetime.now()}] - Product name: {product.title}")
+            print(f"[{datetime.datetime.now()}] - Product name: {product['title']}")
         else:
             print(f"[{datetime.datetime.now()}] - Product {request.id} not found!")
         result = parseProductToGrpc(product) if product \

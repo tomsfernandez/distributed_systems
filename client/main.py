@@ -13,7 +13,7 @@ def config():
     catalog_channel = grpc.insecure_channel('localhost:50051')
     batch_list = ['5cae9f5cce166a184066930a', '5cae9f5cce166a25c2669358']
     catalog_stub = CatalogStub(catalog_channel)
-    # get_product(catalog_stub, '5cae9f5cce166a184066930a')
+    get_product(catalog_stub, '5caf457c075aee055c36ff74')
     get_all_products(catalog_stub)
     # get_products_batch(catalog_stub, batch_list)
 
