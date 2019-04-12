@@ -1,12 +1,8 @@
 let db;
 
-const {MONGO_HOST, MONGO_PORT, MONGO_DB} = require("./config");
-const url = `mongodb://${MONGO_HOST}:${MONGO_PORT}`;
-const mongoDatabase = MONGO_DB;
-
 async function init() {
     await connect();
-    await seedDatabase();
+    await prepare();
 }
 
 async function getFavorites(user_id) {
@@ -22,9 +18,10 @@ async function updateFavorites(user_id, favorites) {
 module.exports = {init, getFavorites, updateFavorites};
 
 async function connect() {
+    const url = `mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}`;
     const MongoClient = require('mongodb').MongoClient;
     const client = new MongoClient(url, {useNewUrlParser:true});
-    console.log(`Connecting to Mongo with url ${url} on db ${mongoDatabase}`);
+    console.log(`Connecting to Mongo with url ${url} on db ${process.env.MONGO_DB}`);
     try {
         await client.connect();
     } catch (e) {
@@ -34,23 +31,13 @@ async function connect() {
         return;
     }
     console.log(`Connected to Mongo successfully`);
-    db = client.db(mongoDatabase);
+    db = client.db(process.env.MONGO_DB);
 }
 
-async function seedDatabase() {
+async function prepare() {
     const faker = require('faker');
-    const productsCollection = db.collection('products');
-    const usersCollection = db.collection('users');
-    console.log("Seeding Users...");
-    await seedUsers(faker, usersCollection);
-    console.log("Seeding Products...");
-    await seedProducts(faker, productsCollection);
-    console.log("Seeding Favorites...");
-    await seedFavorites(faker, usersCollection, productsCollection);
-    console.log("Done seeding!");
-}
 
-async function seedUsers(faker, usersCollection) {
+    const usersCollection = db.collection('users');
     if (await usersCollection.countDocuments({}) > 0) return;
     await usersCollection.deleteMany({});
     const newUsers = [];
@@ -58,18 +45,15 @@ async function seedUsers(faker, usersCollection) {
         newUsers.push({name: faker.name.findName()});
     }
     await usersCollection.insertMany(newUsers);
-}
 
-async function seedProducts(faker, productsCollection) {
+    const productsCollection = db.collection('products');
     await productsCollection.deleteMany({});
     const newProducts = [];
     for (let i = 0; i < 100; i++) {
         newProducts.push({title: faker.commerce.productName(), description: faker.lorem.sentence()});
     }
     await productsCollection.insertMany(newProducts);
-}
 
-async function seedFavorites(faker, usersCollection, productsCollection) {
     const products = await productsCollection.find({}).toArray();
     const favoritesCollection = db.collection('favorites');
     await favoritesCollection.deleteMany({});

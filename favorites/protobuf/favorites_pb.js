@@ -77,7 +77,7 @@ proto.store.GetFavoritesRequest.toObject = function(includeInstance, msg) {
 
 
 /**
- * Deserializes binary data (in protobuffers wire format).
+ * Deserializes binary data (in protobuf wire format).
  * @param {jspb.ByteSource} bytes The bytes to deserialize.
  * @return {!proto.store.GetFavoritesRequest}
  */
@@ -89,7 +89,7 @@ proto.store.GetFavoritesRequest.deserializeBinary = function(bytes) {
 
 
 /**
- * Deserializes binary data (in protobuffers wire format) from the
+ * Deserializes binary data (in protobuf wire format) from the
  * given reader into the given message object.
  * @param {!proto.store.GetFavoritesRequest} msg The message object to deserialize into.
  * @param {!jspb.BinaryReader} reader The BinaryReader to use.
@@ -120,7 +120,7 @@ proto.store.GetFavoritesRequest.deserializeBinaryFromReader = function(msg, read
 
 
 /**
- * Serializes the message to binary data (in protobuffers wire format).
+ * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.store.GetFavoritesRequest.prototype.serializeBinary = function() {
@@ -131,7 +131,7 @@ proto.store.GetFavoritesRequest.prototype.serializeBinary = function() {
 
 
 /**
- * Serializes the given message to binary data (in protobuffers wire
+ * Serializes the given message to binary data (in protobuf wire
  * format), writing to the given BinaryWriter.
  * @param {!proto.store.GetFavoritesRequest} message
  * @param {!jspb.BinaryWriter} writer
@@ -256,7 +256,7 @@ proto.store.UpdateFavoritesRequest.toObject = function(includeInstance, msg) {
 
 
 /**
- * Deserializes binary data (in protobuffers wire format).
+ * Deserializes binary data (in protobuf wire format).
  * @param {jspb.ByteSource} bytes The bytes to deserialize.
  * @return {!proto.store.UpdateFavoritesRequest}
  */
@@ -268,7 +268,7 @@ proto.store.UpdateFavoritesRequest.deserializeBinary = function(bytes) {
 
 
 /**
- * Deserializes binary data (in protobuffers wire format) from the
+ * Deserializes binary data (in protobuf wire format) from the
  * given reader into the given message object.
  * @param {!proto.store.UpdateFavoritesRequest} msg The message object to deserialize into.
  * @param {!jspb.BinaryReader} reader The BinaryReader to use.
@@ -303,7 +303,7 @@ proto.store.UpdateFavoritesRequest.deserializeBinaryFromReader = function(msg, r
 
 
 /**
- * Serializes the message to binary data (in protobuffers wire format).
+ * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.store.UpdateFavoritesRequest.prototype.serializeBinary = function() {
@@ -314,7 +314,7 @@ proto.store.UpdateFavoritesRequest.prototype.serializeBinary = function() {
 
 
 /**
- * Serializes the given message to binary data (in protobuffers wire
+ * Serializes the given message to binary data (in protobuf wire
  * format), writing to the given BinaryWriter.
  * @param {!proto.store.UpdateFavoritesRequest} message
  * @param {!jspb.BinaryWriter} writer
