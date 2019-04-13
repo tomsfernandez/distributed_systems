@@ -5,14 +5,14 @@ async function init() {
     await prepare();
 }
 
-async function getFavorites(user_id) {
+async function getFavorites(userId) {
     const collection = db.collection('favorites');
-    return await collection.findOne({user_id});
+    return await collection.findOne({user_id: userId});
 }
 
-async function updateFavorites(user_id, favorites) {
+async function updateFavorites(userId, favorites) {
     const collection = db.collection('favorites');
-    await collection.findOneAndReplace({user_id}, favorites);
+    await collection.findOneAndReplace({user_id: userId}, favorites);
 }
 
 module.exports = {init, getFavorites, updateFavorites};
