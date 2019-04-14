@@ -12,6 +12,7 @@
   "license": "ISC",
   "repository": "https://github.com/tomsfernandez/distributed_systems.git",
   "dependencies": {
+    "etcd3": "^0.2.11",
     "faker": "^4.1.0",
     "google-protobuf": "^3.7.1",
     "grpc": "^1.19.0",

@@ -1,9 +1,6 @@
-let db;
+const config = require('./config');
 
-async function init() {
-    await connect();
-    await prepare();
-}
+let db;
 
 async function getFavorites(userId) {
     const collection = db.collection('favorites');
@@ -17,24 +14,25 @@ async function updateFavorites(userId, favorites) {
 
 module.exports = {init, getFavorites, updateFavorites};
 
-async function connect() {
-    const url = `mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}`;
+async function init() {
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    const url = `mongodb://${config.mongo.host}:${config.mongo.port}`;
     const MongoClient = require('mongodb').MongoClient;
     const client = new MongoClient(url, {useNewUrlParser:true});
-    console.log(`Connecting to Mongo with url ${url} on db ${process.env.MONGO_DB}`);
+    console.log(`Connecting to Mongo with url ${url} on db ${config.mongo.db}`);
     try {
         await client.connect();
     } catch (e) {
-        console.error('Error connecting to database, retrying in 1 second', e);
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        console.log('Error connecting to database, retrying in 1 second', e);
         await connect();
         return;
     }
     console.log(`Connected to Mongo successfully`);
-    db = client.db(process.env.MONGO_DB);
+    db = client.db(config.mongo.db);
+    await prepare(client);
 }
 
-async function prepare() {
+async function prepare(client) {
     const faker = require('faker');
 
     const usersCollection = db.collection('users');

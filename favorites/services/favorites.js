@@ -12,8 +12,10 @@ async function getFavorites(call, callback) {
     if (favorites && favorites.products.length) {
         let products;
         if (call.request.getWithProductDescription()) {
-            for (let i = 0; i < protobuf.catalog.grpc.instantiatedClients.length; i++) {
-                const catalogClient = protobuf.catalog.grpc.instantiatedClients[i];
+            const catalogAddresses = Object.keys(protobuf.catalog.grpc.clientInstances);
+            console.log('Catalog clients:', catalogAddresses);
+            for (let catalogAddress of catalogAddresses) {
+                const catalogClient = protobuf.catalog.grpc.clientInstances[catalogAddress];
                 const productsRequest = new protobuf.catalog.messages.BatchProductRequest();
                 productsRequest.setIdsList(favorites.products);
                 try {
@@ -28,9 +30,9 @@ async function getFavorites(call, callback) {
                         setTimeout(() => {
                             if (!fulfilled) {
                                 canceled = true;
-                                reject(new Error(`Timeout of ${process.env.LOAD_BALANCING_TIMEOUT} ms exceeded`));
+                                reject(new Error(`Timeout`));
                             }
-                        }, process.env.LOAD_BALANCING_TIMEOUT);
+                        }, 500);
                     });
                     products = {};
                     for (let product of productsResponse.getProductsList()) {
@@ -38,7 +40,7 @@ async function getFavorites(call, callback) {
                     }
                     break;
                 } catch (e) {
-                    console.error(`Error getting products from catalog service with client ${i+1} of ${protobuf.catalog.grpc.instantiatedClients.length}`, e);
+                    console.log(`Error getting products from catalog service ${catalogAddress}:`, e);
                 }
             }
         }
