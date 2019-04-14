@@ -37,7 +37,8 @@ async function fake(client) {
     await usersCollection.deleteMany({});
     const newUsers = [];
     for (let i = 0; i < 10; i++) {
-        newUsers.push({name: faker.name.findName()});
+        const last_access = Math.random() > 0.5 ? faker.date.past() : faker.date.recent();
+        newUsers.push({name: faker.name.findName(), email: faker.internet.email(), last_access});
     }
     await usersCollection.insertMany(newUsers);
 
@@ -45,7 +46,14 @@ async function fake(client) {
     await productsCollection.deleteMany({});
     const newProducts = [];
     for (let i = 0; i < 100; i++) {
-        newProducts.push({title: faker.commerce.productName(), description: faker.lorem.sentence()});
+        const rating = Math.floor(Math.random() * 5 + 1);
+        const tagCount = Math.floor(Math.random() * 3 + 1);
+        const tags = [];
+        for (let j = 0; j < tagCount; j++) {
+            const tag = faker.commerce.productAdjective();
+            if (!tags.includes(tag)) tags.push(tag);
+        }
+        newProducts.push({title: faker.commerce.productName(), description: faker.lorem.sentence(), rating, tags});
     }
     await productsCollection.insertMany(newProducts);
 
@@ -56,7 +64,7 @@ async function fake(client) {
     (await usersCollection.find({}).toArray()).forEach(user => {
         const newFavorite = {user_id: user._id.toString(), products: []};
         for (let i = 0; i < 5; i++) {
-            const productIndex = Math.floor(Math.floor(Math.random() * products.length));
+            const productIndex = Math.floor(Math.random() * products.length);
             newFavorite.products.push(products[productIndex]._id.toString());
         }
         newFavorites.push(newFavorite);

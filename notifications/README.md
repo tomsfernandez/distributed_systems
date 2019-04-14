@@ -1,0 +1,1 @@
+Servicio que expone un solo metodo que recibe un email y un mensaje y lo envia. Lo llama el reccomendations.
