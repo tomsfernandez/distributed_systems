@@ -21,7 +21,7 @@ services:
       ETCD_PORT: 2379
       MONGO_HOST: 172.28.3.1
       MONGO_PORT: 27017
-      MONGO_DB: store
+      MONGO_DB: catalog
       MONGO_COLLECTION: products
 
   catalog_api_2:
@@ -44,7 +44,7 @@ services:
       ETCD_PORT: 2379
       MONGO_HOST: 172.28.3.1
       MONGO_PORT: 27017
-      MONGO_DB: store
+      MONGO_DB: catalog
       MONGO_COLLECTION: products
 
   favorites_api:
@@ -65,7 +65,7 @@ services:
       PORT: 50051
       MONGO_HOST: 172.28.3.1
       MONGO_PORT: 27017
-      MONGO_DB: store
+      MONGO_DB: favorites
       ETCD_HOST: 172.28.4.1
       ETCD_PORT: 2379
 

@@ -1,21 +1,18 @@
-const config = require('./config');
-
 let db;
 
 async function getFavorites(userId) {
-    const collection = db.collection('favorites');
-    return await collection.findOne({user_id: userId});
+    return await db.collection('favorites').findOne({user_id: userId});
 }
 
 async function updateFavorites(userId, favorites) {
-    const collection = db.collection('favorites');
-    await collection.findOneAndReplace({user_id: userId}, favorites);
+    await db.collection('favorites').findOneAndReplace({user_id: userId}, favorites);
 }
 
 module.exports = {init, getFavorites, updateFavorites};
 
 async function init() {
     await new Promise(resolve => setTimeout(resolve, 1000));
+    const config = require('./config');
     const url = `mongodb://${config.mongo.host}:${config.mongo.port}`;
     const MongoClient = require('mongodb').MongoClient;
     const client = new MongoClient(url, {useNewUrlParser:true});
@@ -29,13 +26,13 @@ async function init() {
     }
     console.log(`Connected to Mongo successfully`);
     db = client.db(config.mongo.db);
-    await prepare(client);
+    await fake(client);
 }
 
-async function prepare(client) {
+async function fake(client) {
     const faker = require('faker');
 
-    const usersCollection = db.collection('users');
+    const usersCollection = client.db('users').collection('users');
     if (await usersCollection.countDocuments({}) > 0) return;
     await usersCollection.deleteMany({});
     const newUsers = [];
@@ -44,7 +41,7 @@ async function prepare(client) {
     }
     await usersCollection.insertMany(newUsers);
 
-    const productsCollection = db.collection('products');
+    const productsCollection = client.db('catalog').collection('products');
     await productsCollection.deleteMany({});
     const newProducts = [];
     for (let i = 0; i < 100; i++) {
