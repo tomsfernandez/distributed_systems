@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package store;
+
+import "empty.proto";
+
+service Notifications {
+    rpc Notify (NotificationRequest) returns (Empty);
+    rpc NotifyUser (UserNotificationRequest) returns (Empty);
+}
+
+message NotificationRequest {
+    string name = 1;
+    string email = 2;
+    string content = 3;
+}
+
+message UserNotificationRequest {
+    string user_id = 1;
+    string content = 2;
+}
