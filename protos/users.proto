@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package store;
+
+import "empty.proto";
+
+service Users {
+    rpc CreateUser (CreateUserRequest) returns (User);
+    rpc ReadUser (UserRequest) returns (User);
+    rpc UpdateUser (UpdateUserRequest) returns (User);
+    rpc DeleteUser (UserRequest) returns (User);
+    rpc ListUsers (Empty) returns (BatchUsers);
+}
+
+message CreateUserRequest {
+    string name = 1;
+    string email = 2;
+}
+
+message UserRequest {
+    string id = 1;
+}
+
+message UpdateUserRequest {
+    string id = 1;
+    string name = 2;
+    string email = 3;
+}
+
+message User {
+    string id = 1;
+    string name = 2;
+    string email = 3;
+    string last_login = 4;
+}
+
+message BatchUsers {
+    repeated User users = 1;
+}
