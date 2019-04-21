@@ -8,7 +8,7 @@ class EtcdClient {
 
     async register(){
         console.log('Registering instance to etcd');
-        const lease = this.client.namespace('/notifications/').lease(10);
+        const lease = this.client.namespace('/notifications/instances/').lease(10);
         lease.on('lost', async err => {
             console.log('Lost lease of registered instance to etcd', err);
             console.log('Trying to re-grant it');

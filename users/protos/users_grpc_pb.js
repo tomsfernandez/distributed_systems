@@ -3,7 +3,6 @@
 'use strict';
 var grpc = require('grpc');
 var users_pb = require('./users_pb.js');
-var empty_pb = require('./empty_pb.js');
 
 function serialize_store_BatchUsers(arg) {
   if (!(arg instanceof users_pb.BatchUsers)) {
@@ -27,15 +26,15 @@ function deserialize_store_CreateUserRequest(buffer_arg) {
   return users_pb.CreateUserRequest.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_store_Empty(arg) {
-  if (!(arg instanceof empty_pb.Empty)) {
-    throw new Error('Expected argument of type store.Empty');
+function serialize_store_ListUsersRequest(arg) {
+  if (!(arg instanceof users_pb.ListUsersRequest)) {
+    throw new Error('Expected argument of type store.ListUsersRequest');
   }
   return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_store_Empty(buffer_arg) {
-  return empty_pb.Empty.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_store_ListUsersRequest(buffer_arg) {
+  return users_pb.ListUsersRequest.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
 function serialize_store_UpdateUserRequest(arg) {
@@ -121,10 +120,10 @@ var UsersService = exports.UsersService = {
     path: '/store.Users/ListUsers',
     requestStream: false,
     responseStream: false,
-    requestType: empty_pb.Empty,
+    requestType: users_pb.ListUsersRequest,
     responseType: users_pb.BatchUsers,
-    requestSerialize: serialize_store_Empty,
-    requestDeserialize: deserialize_store_Empty,
+    requestSerialize: serialize_store_ListUsersRequest,
+    requestDeserialize: deserialize_store_ListUsersRequest,
     responseSerialize: serialize_store_BatchUsers,
     responseDeserialize: deserialize_store_BatchUsers,
   },

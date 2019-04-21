@@ -32,5 +32,5 @@ const config = require('./config');
     server.addService(protobuf.healthcheck.grpc.HealthCheckService, services.healthcheck);
     server.bind(`0.0.0.0:${config.port}`, grpc.ServerCredentials.createInsecure());
     server.start();
-    console.log(`Serving at port ${config.port}`);
+    console.log(`Serving at ${config.host}:${config.port}`);
 })();

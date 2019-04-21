@@ -51,7 +51,10 @@ class UsersService{
     }
 
     async listUsers(call, callback){
-        const users = await this.repository.list();
+        const filter = {
+            last_access_max: call.request.getLastAccessMax()
+        };
+        const users = await this.repository.list(filter);
         const response = new protos.messages.users.BatchUsers();
         const grpcUsers = users.map(x => mapToGrpcUser(x));
         response.setUsersList(grpcUsers);
@@ -67,7 +70,7 @@ function mapToGrpcUser(user){
     result.setId(user._id.toString());
     result.setName(user.name);
     result.setEmail(user.email);
-    result.setLastLogin(user.last_login);
+    result.setLastAccess(user.last_access);
     return result;
 }
 
@@ -76,7 +79,7 @@ const emptyUser = () => {
         _id: "",
         name: "",
         email: "",
-        lastLogin: ""
+        lastAccess: ""
     }
 };
 

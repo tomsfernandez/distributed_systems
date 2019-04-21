@@ -7,9 +7,9 @@ class UserRepository {
     }
 
     async create(user){
-        const now = new Date().toISOString();
+        const now = Date.now();
         const promise = new Promise((resolve, reject) => {
-            this.db.insertOne({name: user.name, email: user.email, last_login: now}, (error, result) => {
+            this.db.insertOne({name: user.name, email: user.email, last_access: now}, (error, result) => {
                 if (error) reject();
                 else resolve(result.ops[0]);
             })
@@ -22,7 +22,7 @@ class UserRepository {
     }
 
     async update(user){
-        const now = new Date().toISOString();
+        const now = Date.now();
         return await this.db.updateOne({'_id': ObjectId(user._id)}, {
             $set: {
                 name: user.name,
@@ -38,8 +38,8 @@ class UserRepository {
         return user;
     }
 
-    async list(){
-        return await this.db.find({}).toArray();
+    async list({last_access_max}){
+        return await this.db.find({last_access: {$lte: last_access_max}}).toArray();
     }
 }
 

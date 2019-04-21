@@ -8,7 +8,7 @@ from protos.healthcheck_pb2_grpc import HealthCheckServicer, add_HealthCheckServ
 import grpc
 import time
 from concurrent import futures
-from settings import MONGO_DB, MONGO_PORT, MONGO_HOST, MONGO_COLLECTION, HOST, PORT, ETCD_HOST, ETCD_PORT
+from settings import MONGO_DB, MONGO_PORT, MONGO_HOST, HOST, PORT, ETCD_HOST, ETCD_PORT
 from mongo_helper import getMongoCollection, parseProductToGrpc, getProductsWithIds
 from bson.objectid import ObjectId
 
@@ -66,11 +66,10 @@ def block(on_interrupt, delta):
     except KeyboardInterrupt:
         on_interrupt()
 
-print(f"Mongo params: {MONGO_HOST}:{MONGO_PORT} with db {MONGO_DB}/{MONGO_COLLECTION}")
+print(f"Catalog server started in ${HOST}:{PORT}")
 db = getMongoCollection()
 grpc_server = build_server(db)
 grpc_server.start()
-print(f"Catalog server started in port {PORT}")
 
 etcd = etcd3.client(host=ETCD_HOST, port=ETCD_PORT)
 lease = etcd.lease(10)

@@ -37,7 +37,7 @@ async function fake(client) {
     await usersCollection.deleteMany({});
     const newUsers = [];
     for (let i = 0; i < 10; i++) {
-        const last_access = Math.random() > 0.5 ? faker.date.past() : faker.date.recent();
+        const last_access = Math.random() > 0.5 ? faker.date.past().getTime() : faker.date.recent().getTime();
         newUsers.push({name: faker.name.findName(), email: faker.internet.email(), last_access});
     }
     await usersCollection.insertMany(newUsers);

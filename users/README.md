@@ -1,1 +1,0 @@
-Servicio que expone un metodo para devolver usuarios que no hayan ingresado hace tanto tiempo, el tiempo se recibe como parametro. Lo llama el reccomendations.

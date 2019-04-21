@@ -1,12 +1,12 @@
 from protos.product_pb2 import Product
-from settings import MONGO_HOST, MONGO_PORT, MONGO_DB, MONGO_COLLECTION
+from settings import MONGO_HOST, MONGO_PORT, MONGO_DB
 from pymongo import MongoClient
 
 
 def getMongoCollection():
     client = MongoClient(MONGO_HOST, MONGO_PORT)
     db = client[MONGO_DB]
-    return db[MONGO_COLLECTION]
+    return db['products']
 
 
 def parseProductToGrpc(product):
