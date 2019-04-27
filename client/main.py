@@ -9,25 +9,22 @@ from protos.catalog_pb2 import ProductRequest, BatchProductRequest
 from protos.favorites_pb2 import UpdateFavoritesRequest, GetFavoritesRequest
 from protos.empty_pb2 import Empty
 from protos.healthcheck_pb2_grpc import HealthCheckStub
-from settings import FAVORITES_SERVICE_IPS
 import grpc
 
 
 def config():
-
-    favoriteIps = FAVORITES_SERVICE_IPS.split(";")
-    favorites_service = FavoritesService(favoriteIps)
-    favorites_service.get_favorites("5cae4088fa1f0412bc921066", False)
+    # favoriteIps = FAVORITES_SERVICE_IPS.split(";")
+    # favorites_service = FavoritesService(favoriteIps)
+    # favorites_service.get_favorites("5cae4088fa1f0412bc921066", False)
     # CATALOGUE API
-
-#    catalog_channel = grpc.insecure_channel('localhost:50051')
+    catalog_channel = grpc.insecure_channel('localhost:50051')
     batch_list = ['5cae9f5cce166a184066930a', '5cae9f5cce166a25c2669358']
-#    catalog_stub = CatalogStub(catalog_channel)
-#    catalog_health_stub = HealthCheckStub(catalog_channel)
-#    health_check = HealthCheck(catalog_health_stub, lambda x: print("It works!"))
-#    health_check.check()
-#    get_product(catalog_stub, '5caf457c075aee055c36ff74')
-#    get_all_products(catalog_stub)
+    catalog_stub = CatalogStub(catalog_channel)
+    # catalog_health_stub = HealthCheckStub(catalog_channel)
+    #    health_check = HealthCheck(catalog_health_stub, lambda x: print("It works!"))
+    #    health_check.check()
+    # get_product(catalog_stub, '5caf6878196bad92e74d61fe')
+    # get_all_products(catalog_stub)
     # get_products_batch(catalog_stub, batch_list)
 
     # FAVORITE API
@@ -35,9 +32,11 @@ def config():
     product_list = ['5cae9f5cce166a184066930a']
     favorite_channel = grpc.insecure_channel('localhost:50052')
     favorite_stub = FavoritesStub(favorite_channel)
-    favorite_health_stub = HealthCheckStub(favorite_channel)
-#    get_favorites(favorite_stub, user_id, True)
-    # update_favorite(favorite_stub, user_id, product_list, [])
+    # favorite_health_stub = HealthCheckStub(favorite_channel)
+    get_favorites(favorite_stub, user_id, True)
+
+
+# update_favorite(favorite_stub, user_id, product_list, [])
 
 
 def process_response(call_future):

@@ -1,0 +1,20 @@
+{
+  "name": "recommendations",
+  "version": "1.0.0",
+  "description": "Tiene un master que decide a que usuarios se va a recomendar, llamando al servicio users y pidiendole los usuarios que no ingresan hace determinado tiempo (una semana por ejemplo). Despues se fija que no hayan sido recomendados hace determinado tiempo (3 meses por ejemplo) en su propia db (dbName=reccomendations). Una vez elegidos los usuarios, para cada uno se llama a un worker de este servicio. El worker obtiene la lista de favoritos del servicio favorites. Como el favorites solo devuelve ids, despues llama al catalog para pedirle todos los datos de los productos. Se podria hacer que el favorites devuelva el producto entero tambien. Despues extrae los tags de los productos y llama al catalog para pedirle productos que tengan esos tags, ordenados por rating descendiente, con un limite de 10 productos y que no esten en su lista de favoritos. El worker despues llama al notifications para mandarle un email con esos productos. Despues graba en su db (reccomendations) que el recomendo al usuario en tal fecha.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "repository": "https://github.com/tomsfernandez/distributed_systems.git",
+  "dependencies": {
+    "etcd3": "^0.2.11",
+    "faker": "^4.1.0",
+    "google-protobuf": "^3.7.1",
+    "grpc": "^1.20.0",
+    "mongodb": "^3.2.3"
+  }
+}
