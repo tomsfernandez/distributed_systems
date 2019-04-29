@@ -3,12 +3,12 @@ import time
 
 from FavoritesService import FavoritesService
 from HealthCheck import HealthCheck
-from protos.catalog_pb2_grpc import CatalogStub
-from protos.favorites_pb2_grpc import FavoritesStub
-from protos.catalog_pb2 import ProductRequest, BatchProductRequest
-from protos.favorites_pb2 import UpdateFavoritesRequest, GetFavoritesRequest
-from protos.empty_pb2 import Empty
-from protos.healthcheck_pb2_grpc import HealthCheckStub
+from catalog_pb2_grpc import CatalogStub
+from favorites_pb2_grpc import FavoritesStub
+from catalog_pb2 import ProductRequest, BatchProductRequest
+from favorites_pb2 import UpdateFavoritesRequest, GetFavoritesRequest
+from empty_pb2 import Empty
+from healthcheck_pb2_grpc import HealthCheckStub
 from settings import FAVORITES_SERVICE_IPS
 import grpc
 
@@ -59,8 +59,8 @@ def get_products_batch(stub, batch_list):
     products_batch_future.add_done_callback(process_response)
 
 
-def get_favorites(stub, user_id, with_description):
-    request = GetFavoritesRequest(user_id=user_id, with_product_description=with_description)
+def get_favorites(stub, user_id, full_product):
+    request = GetFavoritesRequest(user_id=user_id, full_product=full_product)
     favorite_future = stub.GetFavorites.future(request)
     favorite_future.add_done_callback(process_response)
 

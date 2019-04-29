@@ -1,7 +1,7 @@
 import threading
 import time
 
-from protos.empty_pb2 import Empty
+from empty_pb2 import Empty
 
 
 class HealthCheck:

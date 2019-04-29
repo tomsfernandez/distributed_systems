@@ -1,9 +1,9 @@
 import grpc
 
 from HealthCheck import HealthChecker
-from protos.favorites_pb2 import GetFavoritesRequest
-from protos.favorites_pb2_grpc import FavoritesStub
-from protos.healthcheck_pb2_grpc import HealthCheckStub
+from favorites_pb2 import GetFavoritesRequest
+from favorites_pb2_grpc import FavoritesStub
+from healthcheck_pb2_grpc import HealthCheckStub
 
 
 def makeOneClient(ip, service):
@@ -33,11 +33,11 @@ class FavoritesService:
         self.blackList = []
         self.healthChecker = HealthChecker(10000, lambda x: self.on_health(x))
 
-    async def get_favorites(self, userId, withDescription):
+    async def get_favorites(self, userId, fullProduct):
         aClient = self.clients.pop() if len(self.clients) > 0 else None
         while aClient is not None:
             try:
-                request = GetFavoritesRequest(user_id=userId, with_product_description=withDescription)
+                request = GetFavoritesRequest(user_id=userId, full_product=fullProduct)
                 favorites = aClient.client.GetFavorites.future(request).result()
                 self.clients.append(aClient)
                 return favorites

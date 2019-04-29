@@ -19,6 +19,7 @@ pip install grpc_tools
 Generate code:
 ```Shell
 python -m grpc_tools.protoc --proto_path=. --python_out=../catalog --grpc_python_out=../catalog *.proto
+python -m grpc_tools.protoc --proto_path=. --python_out=../client --grpc_python_out=../client *.proto
 ```
 
 ## Node

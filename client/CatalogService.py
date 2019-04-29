@@ -1,7 +1,7 @@
 import asyncio
 
 import GrpcRequestError
-from protos.catalog_pb2 import BatchProductRequest
+from catalog_pb2 import BatchProductRequest
 
 
 class CatalogService:
