@@ -12,7 +12,7 @@ const client = new Etcd3({hosts:`${config.etcd.host}:${config.etcd.port}`});
 const etcdClient = new EtcdClient(client);
 
 (async () => {
-    const userRegistry = await RegistryBuilder.build("/users/", client);
+    const userRegistry = await RegistryBuilder.build("/users/instances/", client);
     const userServiceClient = new UsersServiceClient(userRegistry);
     const sendEmail = (name, email, content) => {
         console.log(`Sending email to ${name},${email},${content}`)

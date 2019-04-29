@@ -4,7 +4,7 @@ module.exports = {
     mongo: {
         host: process.env.MONGO_HOST || "192.168.99.100",
         port: process.env.MONGO_PORT || "27017",
-        db: process.env.MONGO_DB || "store",
+        db: process.env.MONGO_DB || "favorites",
     },
     etcd: {
         host: process.env.ETCD_HOST || "192.168.99.100",

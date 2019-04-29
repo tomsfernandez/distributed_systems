@@ -18,7 +18,7 @@ class UsersServiceClient {
                 const grpcUser = await withTimeout(readUserAction, 1000000);
                 return {name: grpcUser.getName(), email: grpcUser.getEmail()};
             }catch (e) {
-                console.log(`[${new Date().toISOString()}] - Couldn't get user from endpoint ${endpoint}. Retrying....`);
+                console.log(`[${new Date().toISOString()}] - Couldn't get user from endpoint ${endpoint}. Retrying....`, e);
             }
         }
         console.log(`[${new Date().toISOString()}] - All endpoints failed, returning empty User`);

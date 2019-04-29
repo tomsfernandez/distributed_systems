@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='store',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\rproduct.proto\x12\x05store\"9\n\x07Product\x12\n\n\x02id\x18\x01 \x01(\t\x12\r\n\x05title\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\"/\n\x0bProductList\x12 \n\x08products\x18\x01 \x03(\x0b\x32\x0e.store.Productb\x06proto3')
+  serialized_pb=_b('\n\rproduct.proto\x12\x05store\"W\n\x07Product\x12\n\n\x02id\x18\x01 \x01(\t\x12\r\n\x05title\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x0c\n\x04tags\x18\x04 \x03(\t\x12\x0e\n\x06rating\x18\x05 \x01(\x05\"/\n\x0bProductList\x12 \n\x08products\x18\x01 \x03(\x0b\x32\x0e.store.Productb\x06proto3')
 )
 
 
@@ -53,6 +53,20 @@ _PRODUCT = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='tags', full_name='store.Product.tags', index=3,
+      number=4, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='rating', full_name='store.Product.rating', index=4,
+      number=5, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -66,7 +80,7 @@ _PRODUCT = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=24,
-  serialized_end=81,
+  serialized_end=111,
 )
 
 
@@ -96,8 +110,8 @@ _PRODUCTLIST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=83,
-  serialized_end=130,
+  serialized_start=113,
+  serialized_end=160,
 )
 
 _PRODUCTLIST.fields_by_name['products'].message_type = _PRODUCT

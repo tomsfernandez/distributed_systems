@@ -12,8 +12,8 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-import protos.empty_pb2 as empty__pb2
-import protos.product_pb2 as product__pb2
+import empty_pb2 as empty__pb2
+import product_pb2 as product__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -21,7 +21,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='store',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\rcatalog.proto\x12\x05store\x1a\x0b\x65mpty.proto\x1a\rproduct.proto\"\x1c\n\x0eProductRequest\x12\n\n\x02id\x18\x01 \x01(\t\"\"\n\x13\x42\x61tchProductRequest\x12\x0b\n\x03ids\x18\x01 \x03(\t2\xbb\x01\n\x07\x43\x61talog\x12\x35\n\nGetProduct\x12\x15.store.ProductRequest\x1a\x0e.store.Product\"\x00\x12\x43\n\x0fGetProductBatch\x12\x1a.store.BatchProductRequest\x1a\x12.store.ProductList\"\x00\x12\x34\n\x0eGetAllProducts\x12\x0c.store.Empty\x1a\x12.store.ProductList\"\x00\x62\x06proto3')
+  serialized_pb=_b('\n\rcatalog.proto\x12\x05store\x1a\x0b\x65mpty.proto\x1a\rproduct.proto\"\x1c\n\x0eProductRequest\x12\n\n\x02id\x18\x01 \x01(\t\"\"\n\x13\x42\x61tchProductRequest\x12\x0b\n\x03ids\x18\x01 \x03(\t\"A\n\rProductFilter\x12\x0c\n\x04tags\x18\x01 \x03(\t\x12\x13\n\x0b\x65xclude_ids\x18\x02 \x03(\t\x12\r\n\x05limit\x18\x03 \x01(\x05\x32\xf7\x01\n\x07\x43\x61talog\x12\x35\n\nGetProduct\x12\x15.store.ProductRequest\x1a\x0e.store.Product\"\x00\x12\x43\n\x0fGetProductBatch\x12\x1a.store.BatchProductRequest\x1a\x12.store.ProductList\"\x00\x12\x34\n\x0eGetAllProducts\x12\x0c.store.Empty\x1a\x12.store.ProductList\"\x00\x12:\n\x0e\x46ilterProducts\x12\x14.store.ProductFilter\x1a\x12.store.ProductListb\x06proto3')
   ,
   dependencies=[empty__pb2.DESCRIPTOR,product__pb2.DESCRIPTOR,])
 
@@ -89,8 +89,54 @@ _BATCHPRODUCTREQUEST = _descriptor.Descriptor(
   serialized_end=116,
 )
 
+
+_PRODUCTFILTER = _descriptor.Descriptor(
+  name='ProductFilter',
+  full_name='store.ProductFilter',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='tags', full_name='store.ProductFilter.tags', index=0,
+      number=1, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='exclude_ids', full_name='store.ProductFilter.exclude_ids', index=1,
+      number=2, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='limit', full_name='store.ProductFilter.limit', index=2,
+      number=3, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=118,
+  serialized_end=183,
+)
+
 DESCRIPTOR.message_types_by_name['ProductRequest'] = _PRODUCTREQUEST
 DESCRIPTOR.message_types_by_name['BatchProductRequest'] = _BATCHPRODUCTREQUEST
+DESCRIPTOR.message_types_by_name['ProductFilter'] = _PRODUCTFILTER
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 ProductRequest = _reflection.GeneratedProtocolMessageType('ProductRequest', (_message.Message,), dict(
@@ -107,6 +153,13 @@ BatchProductRequest = _reflection.GeneratedProtocolMessageType('BatchProductRequ
   ))
 _sym_db.RegisterMessage(BatchProductRequest)
 
+ProductFilter = _reflection.GeneratedProtocolMessageType('ProductFilter', (_message.Message,), dict(
+  DESCRIPTOR = _PRODUCTFILTER,
+  __module__ = 'catalog_pb2'
+  # @@protoc_insertion_point(class_scope:store.ProductFilter)
+  ))
+_sym_db.RegisterMessage(ProductFilter)
+
 
 
 _CATALOG = _descriptor.ServiceDescriptor(
@@ -115,8 +168,8 @@ _CATALOG = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=119,
-  serialized_end=306,
+  serialized_start=186,
+  serialized_end=433,
   methods=[
   _descriptor.MethodDescriptor(
     name='GetProduct',
@@ -142,6 +195,15 @@ _CATALOG = _descriptor.ServiceDescriptor(
     index=2,
     containing_service=None,
     input_type=empty__pb2._EMPTY,
+    output_type=product__pb2._PRODUCTLIST,
+    serialized_options=None,
+  ),
+  _descriptor.MethodDescriptor(
+    name='FilterProducts',
+    full_name='store.Catalog.FilterProducts',
+    index=3,
+    containing_service=None,
+    input_type=_PRODUCTFILTER,
     output_type=product__pb2._PRODUCTLIST,
     serialized_options=None,
   ),

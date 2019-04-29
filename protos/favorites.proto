@@ -12,7 +12,7 @@ service Favorites {
 
 message GetFavoritesRequest {
     string user_id = 1;
-    bool with_product_description = 2;
+    bool full_product = 2;
 }
 
 message UpdateFavoritesRequest {

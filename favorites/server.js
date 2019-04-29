@@ -1,7 +1,7 @@
 const grpc = require('grpc');
 const db = require('./db');
 const protobuf = require('./protobuf');
-const services = require('./services');
+const protobufImpl = require('./protobuf-impl');
 const etcd = require('./etcd');
 const config = require('./config');
 
@@ -28,8 +28,8 @@ const config = require('./config');
     }
 
     const server = new grpc.Server();
-    server.addService(protobuf.favorites.grpc.FavoritesService, services.favorites);
-    server.addService(protobuf.healthcheck.grpc.HealthCheckService, services.healthcheck);
+    server.addService(protobuf.favorites.grpc.FavoritesService, protobufImpl.favorites);
+    server.addService(protobuf.healthcheck.grpc.HealthCheckService, protobufImpl.healthcheck);
     server.bind(`0.0.0.0:${config.port}`, grpc.ServerCredentials.createInsecure());
     server.start();
     console.log(`Serving at ${config.host}:${config.port}`);

@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package store;
+
+import "empty.proto";
+
+service Recommendations {
+    rpc RecommendUser (RecommendUserRequest) returns (Empty);
+}
+
+message RecommendUserRequest {
+    string user_id = 1;
+}

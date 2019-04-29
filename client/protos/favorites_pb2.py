@@ -12,8 +12,8 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-import protos.empty_pb2 as empty__pb2
-import protos.product_pb2 as product__pb2
+import empty_pb2 as empty__pb2
+import product_pb2 as product__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -21,7 +21,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='store',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\x0f\x66\x61vorites.proto\x12\x05store\x1a\x0b\x65mpty.proto\x1a\rproduct.proto\"H\n\x13GetFavoritesRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\t\x12 \n\x18with_product_description\x18\x02 \x01(\x08\"^\n\x16UpdateFavoritesRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\t\x12\x17\n\x0f\x61\x64\x64_product_ids\x18\x02 \x03(\t\x12\x1a\n\x12remove_product_ids\x18\x03 \x03(\t2\x8b\x01\n\tFavorites\x12>\n\x0cGetFavorites\x12\x1a.store.GetFavoritesRequest\x1a\x12.store.ProductList\x12>\n\x0fUpdateFavorites\x12\x1d.store.UpdateFavoritesRequest\x1a\x0c.store.Emptyb\x06proto3')
+  serialized_pb=_b('\n\x0f\x66\x61vorites.proto\x12\x05store\x1a\x0b\x65mpty.proto\x1a\rproduct.proto\"<\n\x13GetFavoritesRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\t\x12\x14\n\x0c\x66ull_product\x18\x02 \x01(\x08\"^\n\x16UpdateFavoritesRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\t\x12\x17\n\x0f\x61\x64\x64_product_ids\x18\x02 \x03(\t\x12\x1a\n\x12remove_product_ids\x18\x03 \x03(\t2\x8b\x01\n\tFavorites\x12>\n\x0cGetFavorites\x12\x1a.store.GetFavoritesRequest\x1a\x12.store.ProductList\x12>\n\x0fUpdateFavorites\x12\x1d.store.UpdateFavoritesRequest\x1a\x0c.store.Emptyb\x06proto3')
   ,
   dependencies=[empty__pb2.DESCRIPTOR,product__pb2.DESCRIPTOR,])
 
@@ -43,7 +43,7 @@ _GETFAVORITESREQUEST = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='with_product_description', full_name='store.GetFavoritesRequest.with_product_description', index=1,
+      name='full_product', full_name='store.GetFavoritesRequest.full_product', index=1,
       number=2, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
@@ -62,7 +62,7 @@ _GETFAVORITESREQUEST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=54,
-  serialized_end=126,
+  serialized_end=114,
 )
 
 
@@ -106,8 +106,8 @@ _UPDATEFAVORITESREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=128,
-  serialized_end=222,
+  serialized_start=116,
+  serialized_end=210,
 )
 
 DESCRIPTOR.message_types_by_name['GetFavoritesRequest'] = _GETFAVORITESREQUEST
@@ -136,8 +136,8 @@ _FAVORITES = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=225,
-  serialized_end=364,
+  serialized_start=213,
+  serialized_end=352,
   methods=[
   _descriptor.MethodDescriptor(
     name='GetFavorites',

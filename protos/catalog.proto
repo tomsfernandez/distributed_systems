@@ -13,8 +13,15 @@ message BatchProductRequest {
   repeated string ids = 1;
 }
 
+message ProductFilter {
+  repeated string tags = 1;
+  repeated string exclude_ids = 2;
+  int32 limit = 3;
+}
+
 service Catalog {
   rpc GetProduct (ProductRequest) returns (Product) {}
   rpc GetProductBatch (BatchProductRequest) returns (ProductList) {}
   rpc GetAllProducts (Empty) returns (ProductList) {}
+  rpc FilterProducts (ProductFilter) returns (ProductList);
 }

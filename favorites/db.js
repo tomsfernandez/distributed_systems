@@ -5,7 +5,18 @@ async function getFavorites(userId) {
 }
 
 async function updateFavorites(userId, favorites) {
-    await db.collection('favorites').findOneAndReplace({user_id: userId}, favorites);
+    if (await getFavorites(userId)) {
+        await db.collection('favorites').findOneAndUpdate({user_id: userId}, buildUpdate(favorites));
+    } else {
+        favorites.user_id = userId;
+        await db.collection('favorites').insertOne(favorites);
+    }
+}
+
+function buildUpdate(object) {
+    const update = {$set: {}};
+    Object.keys(object).forEach(property => update.$set[property] = object[property]);
+    return update;
 }
 
 module.exports = {init, getFavorites, updateFavorites};
@@ -17,13 +28,7 @@ async function init() {
     const MongoClient = require('mongodb').MongoClient;
     const client = new MongoClient(url, {useNewUrlParser:true});
     console.log(`Connecting to Mongo with url ${url} on db ${config.mongo.db}`);
-    try {
-        await client.connect();
-    } catch (e) {
-        console.log('Error connecting to database, retrying in 1 second', e);
-        await connect();
-        return;
-    }
+    await client.connect();
     console.log(`Connected to Mongo successfully`);
     db = client.db(config.mongo.db);
     await fake(client);
