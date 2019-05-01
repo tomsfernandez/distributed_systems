@@ -1,9 +1,6 @@
-import asyncio
 import time
 
 from FavoritesService import FavoritesService
-from HealthCheck import HealthCheck
-from catalog_pb2_grpc import CatalogStub
 from favorites_pb2_grpc import FavoritesStub
 from catalog_pb2 import ProductRequest, BatchProductRequest
 from favorites_pb2 import UpdateFavoritesRequest, GetFavoritesRequest

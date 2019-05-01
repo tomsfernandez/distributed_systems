@@ -1,5 +1,3 @@
-import asyncio
-
 import GrpcRequestError
 from catalog_pb2 import BatchProductRequest
 
