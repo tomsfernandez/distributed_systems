@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: C:\ProgramData\chocolatey\lib\kubernetes-kompose\tools\kompose.exe
+      convert
+    kompose.version: 1.18.0 (06a2e56)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: users-api
+  name: users-api
+spec:
+  ports:
+  - name: "50053"
+    port: 50053
+    targetPort: 50051
+  selector:
+    io.kompose.service: users-api
+status:
+  loadBalancer: {}
