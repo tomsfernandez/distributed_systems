@@ -1,19 +1,14 @@
 const grpc = require('grpc');
 const protos = require('./protos');
 const config = require('./config');
-const { Etcd3 } = require('etcd3');
-const { EtcdClient } = require('./EtcdClient');
-const { RegistryBuilder } = require('./UserServiceRegistry');
 const { UsersServiceClient } = require('./UsersServiceClient');
 const { NotificationsService } = require('./NotificationsService');
 
 const healthService = require('./HealthService');
-const client = new Etcd3({hosts:`${config.etcd.host}:${config.etcd.port}`});
-const etcdClient = new EtcdClient(client);
 
 (async () => {
-    const userRegistry = await RegistryBuilder.build("/users/instances/", client);
-    const userServiceClient = new UsersServiceClient(userRegistry);
+    const userEtcdClient =  new protos.services.users.UsersClient(config.user_endpoint, grpc.credentials.createInsecure());
+    const userServiceClient = new UsersServiceClient(userEtcdClient,config.user_endpoint);
     const sendEmail = (name, email, content) => {
         console.log(`Sending email to ${name},${email},${content}`)
     };
@@ -25,5 +20,4 @@ const etcdClient = new EtcdClient(client);
     server.bind(`0.0.0.0:${config.port}`, grpc.ServerCredentials.createInsecure());
     server.start();
     console.log(`Serving at ${config.host}:${config.port}`);
-    await etcdClient.register();
 })();

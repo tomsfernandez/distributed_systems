@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: common-env-file
+data:
+  USER_ENDPOINT: users-api.default.svc.cluster.local
+  MONGO_HOST: mongodb.default.svc.cluster.local
+  MONGO_PORT: "27017"

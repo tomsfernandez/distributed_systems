@@ -1,0 +1,28 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: notifications-api
+  labels:
+    app: notifications-api
+spec:
+  replicas: 2
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      labels:
+        app: notifications-api
+    spec:
+      containers:
+      - name: notifications-api
+        image: notifications_api
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 50051
+        envFrom:
+        - configMapRef:
+            name: common-env-file
+        resources: {}
+      restartPolicy: Always
+status: {}
