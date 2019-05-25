@@ -4,5 +4,9 @@ metadata:
   name: common-env-file
 data:
   USER_ENDPOINT: users-api.default.svc.cluster.local
+  CATALOG_ENDPOINT: catalog-api.default.svc.cluster.local
+  FAVORITES_ENDPOINT: favorites-api.default.svc.cluster.local
+  NOTIFICATIONS_ENDPOINT: notifications-api.default.svc.cluster.local
+  RECOMMENDATIONS_ENDPOINT: recommendations-api.default.svc.cluster.local
   MONGO_HOST: mongodb.default.svc.cluster.local
   MONGO_PORT: "27017"
