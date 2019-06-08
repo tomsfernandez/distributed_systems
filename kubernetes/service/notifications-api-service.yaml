@@ -7,8 +7,7 @@ spec:
     app: notifications-api
   type: NodePort # le puse NodePort para poder acceder desde fuera del cluster. Sinó tendría que ir ClusterIP.
   ports:
-  - name: tcp
-    port: 80
+  - port: 80
     targetPort: 50051
 status:
   loadBalancer: {}
